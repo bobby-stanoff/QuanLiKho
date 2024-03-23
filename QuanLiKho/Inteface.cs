@@ -14,7 +14,7 @@ namespace QuanLiKho
 {
     public partial class Inteface : Form
     {
-        string connectionString = @"Data Source=PERSON;Initial Catalog=QLXD;Integrated Security=True";
+        string connectionString = @"Data Source=PERSON;Initial Catalog=QLKhoHangCoffee;Integrated Security=True";
         public DataTable LoadDataFromSQL(string sqlQuery)
         {
             DataTable dataTable = new DataTable();
@@ -50,7 +50,7 @@ namespace QuanLiKho
         private void Inteface_Load(object sender, EventArgs e)
         {
             // TODO: This line of code loads data into the 'qLXDDataSet.LoaiHang' table. You can move, or remove it, as needed.
-            this.loaiHangTableAdapter.Fill(this.qLXDDataSet.LoaiHang);
+            
             LoadDataToDataGridView();
         }
 
@@ -96,7 +96,7 @@ namespace QuanLiKho
         private void LoadDataToDataGridView()
         {
             // Assuming you have a connection string named "ConnectionString" in your app.config or web.config fi
-            string connectionString = @"Data Source=PERSON;Initial Catalog=QLXD;Integrated Security=True";
+            string connectionString = @"Data Source=PERSON;Initial Catalog=QLKhoHangCoffee;Integrated Security=True";
 
             // Create a new SqlConnection using the connection string
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -204,6 +204,33 @@ namespace QuanLiKho
             connection.Close();
             MessageBox.Show("them thanh cong");
             RefreshDataGrid(dtg_HH);
+
+        }
+
+        private void btn_Tra_HH_Click(object sender, EventArgs e)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = $"select * from HangHoa where MaHH = @MaHH";
+            DataTable dataTable = new DataTable();
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@MaHH", txt_MaHH_search.Text);
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(dataTable);
+                }
+
+                //command.ExecuteNonQuery();
+
+            }
+            connection.Close();
+
+            dGV_HangHoa_search.DataSource = dataTable;
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
 
         }
     }
