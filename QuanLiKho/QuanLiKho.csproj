@@ -54,6 +54,16 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QLKhoHangCoffeeDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLKhoHangCoffeeDataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="QLKhoHangCoffeeLoaiHangDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLKhoHangCoffeeLoaiHangDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="QLXDDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -80,6 +90,28 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="QLKhoHangCoffeeDataSet2.xsc">
+      <DependentUpon>QLKhoHangCoffeeDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="QLKhoHangCoffeeDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>QLKhoHangCoffeeDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="QLKhoHangCoffeeDataSet2.xss">
+      <DependentUpon>QLKhoHangCoffeeDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="QLKhoHangCoffeeLoaiHangDataSet.xsc">
+      <DependentUpon>QLKhoHangCoffeeLoaiHangDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="QLKhoHangCoffeeLoaiHangDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>QLKhoHangCoffeeLoaiHangDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="QLKhoHangCoffeeLoaiHangDataSet.xss">
+      <DependentUpon>QLKhoHangCoffeeLoaiHangDataSet.xsd</DependentUpon>
+    </None>
     <None Include="QLXDDataSet.xsc">
       <DependentUpon>QLXDDataSet.xsd</DependentUpon>
     </None>

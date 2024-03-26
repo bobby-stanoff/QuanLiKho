@@ -49,9 +49,22 @@ namespace QuanLiKho
 
         private void Inteface_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'qLKhoHangCoffeeDataSet.NhaCungCap' table. You can move, or remove it, as needed.
+            this.nhaCungCapTableAdapter.Fill(this.qLKhoHangCoffeeDataSet.NhaCungCap);
+            // TODO: This line of code loads data into the 'qLKhoHangCoffeeLoaiHangDataSet.LoaiHang' table. You can move, or remove it, as needed.
+            this.loaiHangTableAdapter.Fill(this.qLKhoHangCoffeeLoaiHangDataSet.LoaiHang);
+            // TODO: This line of code loads data into the 'qLKhoHangCoffeeLoaiHangDataSet.LoaiHang' table. You can move, or remove it, as needed.
+            this.loaiHangTableAdapter.Fill(this.qLKhoHangCoffeeLoaiHangDataSet.LoaiHang);
             // TODO: This line of code loads data into the 'qLXDDataSet.LoaiHang' table. You can move, or remove it, as needed.
-            
-            LoadDataToDataGridView();
+
+            LoadDataToDataGridView(dtg_HH,"HangHoa");
+            LoadDataToDataGridView(dtV_NV, "NhanVien");
+            LoadDataToDataGridView(dtV_NCC, "NhaCungCap");
+            LoadDataToDataGridView(dtV_LoaiHang, "LoaiHang");
+            LoadDataToDataGridView(dGV_Nhap, "HoaDonNhap");
+            LoadDataToDataGridView(dGV_LoHang, "LOHANG");
+            LoadDataToDataGridView(dGV_Xuat, "PhieuXuat");
+
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -93,7 +106,7 @@ namespace QuanLiKho
         {
             System.Windows.Forms.Application.Exit();
         }
-        private void LoadDataToDataGridView()
+        private void LoadDataToDataGridView(DataGridView dtg, string table)
         {
             // Assuming you have a connection string named "ConnectionString" in your app.config or web.config fi
             string connectionString = @"Data Source=PERSON;Initial Catalog=QLKhoHangCoffee;Integrated Security=True";
@@ -103,7 +116,7 @@ namespace QuanLiKho
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM HangHoa", connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM {table}", connection))
                 {
                     // Create a SqlDataAdapter to fill the DataTable
                     using (SqlDataAdapter adapter = new SqlDataAdapter(command))
@@ -115,7 +128,7 @@ namespace QuanLiKho
                         adapter.Fill(dataTable);
 
                         // Set the DataTable as the DataSource for the dtg_HH DataGridView
-                        dtg_HH.DataSource = dataTable;
+                        dtg.DataSource = dataTable;
                     }
                 }
             }
@@ -123,7 +136,7 @@ namespace QuanLiKho
 
         private void RefreshDataGrid(DataGridView dtg)
         {
-            LoadDataToDataGridView();
+            LoadDataToDataGridView(dtg, "HangHoa");
             dtg.Update();
             
             //Other updates
@@ -232,6 +245,63 @@ namespace QuanLiKho
         private void label6_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void dtV_NV_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dGV_Xuat_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                // Trích xuất thông tin về bảng ghi đã chọn từ DataGridView
+                DataGridViewRow selectedRow = dGV_Xuat.Rows[e.RowIndex];
+
+                // Trích xuất giá trị từ các ô trong bảng ghi
+                string field1Value = selectedRow.Cells["IDHDX"].Value.ToString();
+                string field2Value = selectedRow.Cells["MaNV"].Value.ToString();
+                string field3Value = selectedRow.Cells["NgayTao"].Value.ToString();
+
+
+
+                // ...
+
+                // Gán giá trị vào các TextBox
+                txt_MaXuat.Text = field1Value;//
+                txt_MaNV_Xuat.Text = field2Value;
+
+                dTP_NgayLap_Xuat.Text = field3Value;//
+
+                lV_Xuat.Columns.Clear(); // Clear previously added columns
+                lV_Xuat.Items.Clear(); // Clear previously populated items
+                lV_Xuat.View = View.Details;
+                lV_Xuat.Columns.Add("IDHDX");
+                lV_Xuat.Columns.Add("MaHH");
+                lV_Xuat.Columns.Add("TenHH");
+                lV_Xuat.Columns.Add("SoLuong");
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = $"SELECT IDHDX, ct.MaHH, TenHH, SoLuong FROM ChiTietPhieuXuat ct join HangHoa hh on ct.MaHH = hh.MaHH where IDHDX = '{field1Value}' ";
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            ListViewItem item = new ListViewItem(reader[0].ToString()); // Column1
+                            item.SubItems.Add(reader[1].ToString()); // Column2
+                            item.SubItems.Add(reader[2].ToString()); // Column3
+                            item.SubItems.Add(reader[3].ToString());
+                            lV_Xuat.Items.Add(item);
+                        }
+                    }
+                }
+
+            }
         }
     }
 }
